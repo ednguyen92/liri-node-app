@@ -42,15 +42,18 @@ function getTwitter() {
   client.get('statuses/user_timeline', params, function (error, tweets, response) {
     if (!error) {
       for (var i = 0; i < tweets.length; i++) {
-        console.log(
+        var tweetInfo = (
           "-----------------------------------------" +
           "\n @PUBG: " + tweets[i].text + "\n Created At: " + tweets[i].created_at +
           "\n-----------------------------------------");
+        console.log(tweetInfo);
 
-        fs.appendFile(
-          "-----------------------------------------" +
-          "\n @PUBG: " + tweets[i].text + "\n Created At: " + tweets[i].created_at +
-          "\n-----------------------------------------");
+        fs.appendFile("twitterLog.txt", tweetInfo, function(err) {
+          if (err) {
+            console.log(err);
+          }
+        
+        });
 
       }
 
@@ -59,29 +62,32 @@ function getTwitter() {
 }
 
 function getSpotify(value) {
-  spotify.search({ type: 'track', query: value }, function (error, data) {
-    if (error) {
-      return console.log('Error occurred: ' + error);
+  spotify.search({ type: 'track', query: value }, function (err, data) {
+    if (err) {
+      return console.log('Error occurred: ' + err);
     }
 
     var song = data.tracks.items[0]
-
-    console.log(
+    var songInfo = (
       "-----------------------------------------" +
-      "\n Artist(s): " + song.artists[0].name +
-      "\n Song Title: " + song.name +
-      "\n Preview Song: " + song.preview_url +
-      "\n Album: " + song.album.name +
-      "\n-----------------------------------------");
+      "\r\n Artist(s): " + song.artists[0].name +
+      "\r\n Song Title: " + song.name +
+      "\r\n Preview Song: " + song.preview_url +
+      "\r\n Album: " + song.album.name +
+      "\r\n-----------------------------------------");
+    console.log(songInfo);
 
-    fs.appendFile("spotifyLog.txt",
-      "-----------------------------------------" +
-      "\n Artist(s): " + song.artists[0].name +
-      "\n Song Title: " + song.name +
-      "\n Preview Song: " + song.preview_url +
-      "\n Album: " + song.album.name +
-      "\n-----------------------------------------")
+    fs.appendFile("spotifyLog.txt", songInfo, function(err) {
 
+      if (err) {
+        console.log(err);
+      }
+    
+      else {
+        console.log("Content Added to Text File!");
+      }
+    
+    });
   })
 }
 
@@ -91,7 +97,7 @@ function getMovie() {
 
     if (!error && response.statusCode === 200) {
       
-      console.log(
+      var movieInfo = (
         "-------------------------------------------" +
         "\n Movie Title: " + JSON.parse(body).Title +
         "\n Year: " + JSON.parse(body).Year +
@@ -102,18 +108,19 @@ function getMovie() {
         "\n Plot: " + JSON.parse(body).Plot +
         "\n Actors: " + JSON.parse(body).Actors +
         "\n-------------------------------------------");
+      console.log(movieInfo);
 
-      fs.appendFile("omdbLog.txt",
-        "-------------------------------------------" +
-        "\n Movie Title: " + JSON.parse(body).Title +
-        "\n Year: " + JSON.parse(body).Year +
-        "\n IMDB Rating: " + JSON.parse(body).imdbRating +
-        "\n Rotten Tomatoes Rating: " + JSON.parse(body).Ratings[1].Value +
-        "\n Produced In: " + JSON.parse(body).Country +
-        "\n Language: " + JSON.parse(body).Language +
-        "\n Plot: " + JSON.parse(body).Plot +
-        "\n Actors: " + JSON.parse(body).Actors +
-        "\n-------------------------------------------")
+      fs.appendFile("omdbLog.txt", movieInfo, function(err) {
+
+        if (err) {
+          console.log(err);
+        }
+      
+        else {
+          console.log("Content Added to Text File!");
+        }
+      
+      });
 
     }
 
